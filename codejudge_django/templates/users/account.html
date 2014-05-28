@@ -8,10 +8,11 @@
 			<h4>Change Password</h4>
       {% if error == 2 %}
         <span class="label label-danger">Old password do not match... Try again</span>
+        <br><br>
       {% elif error == 1 %}
         <span class="label label-success">Your password updated successfully</span>
+        <br><br>
       {% endif %}
-      <br><br>
       <form role="form" method="POST" action="/codejudge_django/change_password/">
       {% csrf_token %}
   				<div class="form-group">
@@ -40,7 +41,7 @@
       {% csrf_token %}
   				<div class="form-group">
             <label for="exampleInputEmail1">New Email Id</label>
-            <input required type="email" class="form-control" id="exampleInputEmail1" placeholder="New Email Id">
+            <input required type="email" class="form-control" id="exampleInputEmail1" placeholder="New Email Id" name="email">
           </div>
   				<input type="submit" class="btn btn-primary" value="Change Email">
 			</form>

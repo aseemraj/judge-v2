@@ -15,15 +15,19 @@ def index(request):
 
 def users_index(request):
 	try:
-		if request.session['username']=='admin':
+		if request.session['username']:
 			return HttpResponseRedirect("/codejudge_django")
+		else:
+			return render(request, 'users/login.html')
 	except KeyError:
 		return render(request, 'users/login.html')
 
 def admin_index(request):
 	try:
-		if request.session['username']:
+		if request.session['username'] and request.session['username']=='admin':
 			return HttpResponseRedirect("admin_site/newprob/")
+		else:
+			return render(request, 'admin_site/index.html')
 	except KeyError:
 		context = RequestContext(request)
 		error = False

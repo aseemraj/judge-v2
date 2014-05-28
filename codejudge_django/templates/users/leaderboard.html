@@ -1,0 +1,33 @@
+{% include "users/base.html" %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table">
+            <tr class="info">
+                <td><b>Rank</b></td>
+                <td><b>Handle</b></td>
+                <td><b>Solved</b></td>
+                <td><b>Score</b></td>
+                <td><b>Posts</b></td>
+            </tr>
+            {% for user in users %}
+                {% if forloop.counter|divisibleby:2 %}
+                    <tr class="success">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.solved }}</td>
+                        <td>{{ user.score }}</td>
+                        <td>{{ user.posts }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.solved }}</td>
+                        <td>{{ user.score }}</td>
+                        <td>{{ user.posts }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>

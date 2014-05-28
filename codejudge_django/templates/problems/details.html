@@ -1,0 +1,25 @@
+{% include "users/base.html" %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-md-6">
+            <form role="form" method="POST" action="/codejudge_django/problems/{{ prob.id }}/" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="lang">Language</label>
+                    <select required class="form-control" id="lang" name="language">
+                        <option value="2">C++</option>
+                        <option value="1">C</option>
+                        <option value="3">Java</option>
+                        <option value="4">Python</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="codesubmit">Code</label>
+                    <textarea rows="16" required type="text" class="form-control" id="codesubmit" name="code"></textarea>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>
+        <div class="col-md-6"><h4><u>{{ prob.problem_name }}</u></h4>{{ prob.problem_statement }}</div>
+    </div>
+</div>

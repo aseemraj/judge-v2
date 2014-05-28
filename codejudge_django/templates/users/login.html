@@ -1,0 +1,82 @@
+<title>Codejudge</title>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/codejudge_django">Codejudge</a>
+      </div>
+    </div>
+  </nav>
+  <br><br><br><br>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-1"></div>
+      <div class="col-md-4">
+        <h4>Login</h4>
+        Please login to continue
+        <hr>
+        {% if error %}
+        <span class="badge" style="background-color:#a00;">You're not registered or you provided invalid credentials while logging in.</span><br><br>
+        {% endif %}
+        <form role="form" method="POST" action="/codejudge_django/login/" >
+          {% csrf_token %}
+          <div class="form-group">
+          <label for="exampleInputUsername">Username</label>
+          <input required type="text" class="form-control" id="exampleInputUsername" placeholder="Enter username" name="username">
+          </div>
+          <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+          </div>
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+          {% else %}
+            <input type="hidden" name="next" value="/codejudge_django/">
+          {% endif %}
+          <input type="submit" class="btn btn-primary" value="Login">
+        </form>
+        <hr>
+      </div>
+      <style type="text/css">
+ 					#your_col{border-left: 1px solid black;}
+  		</style>
+      <div class="col-md-1"></div>
+      <div class="col-md-1" id="your_col">
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      </div>
+
+      <div class="col-md-4">
+        <h4>New Coders Register here</h4>
+        Register as a new coder to continue
+        <hr>
+        <form role="form" method="POST" action = "/codejudge_django/register/">
+        {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputEmail1">Username</label>
+            <input required type="text" class="form-control" id="exampleInputUsername" placeholder="The Chosen One" name="user_name">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input required type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email id" name="email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pass_word">
+          </div>
+          <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <hr></hr>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>

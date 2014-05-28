@@ -1,0 +1,33 @@
+{% include "users/base.html" %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table">
+            <tr class="info">
+                <td><b>S. No.</b></td>
+                <td><b>Name</b></td>
+                <td><b>Points</b></td>
+                <td><b>Time Limit</b></td>
+                <td><b>Solved By</b></td>
+            </tr>
+            {% for prob in problems %}
+                {% if forloop.counter|divisibleby:2 %}
+                    <tr class="success">
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{{ prob.id }}">{{ prob.problem_name }}</a></td>
+                        <td>{{ prob.points }}</td>
+                        <td>{{ prob.time }}</td>
+                        <td>{{ prob.solvedby }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{{ prob.id }}">{{ prob.problem_name }}</a></td>
+                        <td>{{ prob.points }}</td>
+                        <td>{{ prob.time }}</td>
+                        <td>{{ prob.solvedby }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>

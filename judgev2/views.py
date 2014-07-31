@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.template import RequestContext, loader
-from codejudge_django.models import Users, Problems, Solve
+from judgev2.models import Users, Problems, Solve
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 
@@ -41,7 +41,7 @@ def admin_index(request):
 						login(request, user)
 						request.session['username']  = username
 						request.session['password']  = password
-						return HttpResponseRedirect("/codejudge_django/admin_site/newprob/")
+						return HttpResponseRedirect("/judgev2/admin_site/newprob/")
 					else:
 						error = True
 				else:
@@ -69,7 +69,7 @@ def register(request):
 		login(request, user)
 		request.session['username']  = username
 		request.session['password']  = password
-		return HttpResponseRedirect("/codejudge_django")
+		return HttpResponseRedirect("/judgev2")
 
 	else:
 		return HttpResponse("Unsuccesful registration")
@@ -90,7 +90,7 @@ def user_login(request):
 					login(request, user)
 					request.session['username']  = username
 					request.session['password']  = password
-					return HttpResponseRedirect("/codejudge_django")
+					return HttpResponseRedirect("/judgev2")
 				else:
 					error = True
 			else:
@@ -138,7 +138,7 @@ def user_logout(request):
 	del request.session['username']
 	del request.session['password'] 
 	logout(request)
-	return HttpResponseRedirect("/codejudge_django/login")
+	return HttpResponseRedirect("/judgev2/login")
 
 @login_required
 def leaderboard(request):

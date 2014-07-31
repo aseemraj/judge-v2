@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from codejudge_django import views
+from judgev2 import views
 
 urlpatterns = patterns('',
 	url(r'^users/$', views.users_index, name='index'),

@@ -13,7 +13,7 @@
         <span class="label label-success">Your password updated successfully</span>
         <br><br>
       {% endif %}
-      <form role="form" method="POST" action="/codejudge_django/change_password/">
+      <form role="form" method="POST" action="/judgev2/change_password/">
       {% csrf_token %}
   				<div class="form-group">
   				  <label for="exampleInputEmail1">Old Password</label>
@@ -37,7 +37,7 @@
         <span class="label label-success">Your email is updated sucessfully</span>
       {% endif %}
       <br><br>
-      <form role="form" method="POST" action="/codejudge_django/change_email/">
+      <form role="form" method="POST" action="/judgev2/change_email/">
       {% csrf_token %}
   				<div class="form-group">
             <label for="exampleInputEmail1">New Email Id</label>

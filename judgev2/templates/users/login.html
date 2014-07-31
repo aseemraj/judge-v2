@@ -26,7 +26,7 @@
         {% if error %}
         <span class="badge" style="background-color:#a00;">You're not registered or you provided invalid credentials while logging in.</span><br><br>
         {% endif %}
-        <form role="form" method="POST" action="/codejudge_django/login/" >
+        <form role="form" method="POST" action="/judgev2/login/" >
           {% csrf_token %}
           <div class="form-group">
           <label for="exampleInputUsername">Username</label>
@@ -57,7 +57,7 @@
         <h4>New Coders Register here</h4>
         Register as a new coder to continue
         <hr>
-        <form role="form" method="POST" action = "/codejudge_django/register/">
+        <form role="form" method="POST" action = "/judgev2/register/">
         {% csrf_token %}
           <div class="form-group">
             <label for="exampleInputEmail1">Username</label>

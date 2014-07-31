@@ -11,7 +11,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/codejudge_django">Codejudge</a>
+        <a class="navbar-brand" href="/judgev2">Codejudge</a>
       </div>
     </div>
   </nav>
@@ -24,7 +24,7 @@
         Please login to continue
         <hr>
         {% if error %}
-        <span class="badge" style="background-color:#a00;">You're not registered or you provided invalid credentials while logging in.</span><br><br>
+        <span class="badge" style="background-color:#a00;">You're not registered or you provided invalid credentials.</span><br><br>
         {% endif %}
         <form role="form" method="POST" action="/judgev2/login/" >
           {% csrf_token %}
@@ -36,11 +36,6 @@
           <label for="exampleInputPassword1">Password</label>
           <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
           </div>
-          {% if next %}
-            <input type="hidden" name="next" value="{{ next }}">
-          {% else %}
-            <input type="hidden" name="next" value="/codejudge_django/">
-          {% endif %}
           <input type="submit" class="btn btn-primary" value="Login">
         </form>
         <hr>

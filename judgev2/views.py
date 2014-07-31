@@ -9,14 +9,20 @@ from django.contrib.sessions.models import Session
 
 
 # Create your views here.
-@login_required
+
 def index(request):
-	return render(request, 'users/index.html')
+	try:
+		if request.session['username']:
+			return render(request, 'users/index.html')
+		else:
+			return render(request, 'users/login.html')
+	except KeyError:
+		return render(request, 'users/login.html')
 
 def users_index(request):
 	try:
 		if request.session['username']:
-			return HttpResponseRedirect("/codejudge_django")
+			return HttpResponseRedirect("/judgev2")
 		else:
 			return render(request, 'users/login.html')
 	except KeyError:
@@ -77,7 +83,7 @@ def register(request):
 def user_login(request):
 	try:
 		if request.session['username']:
-			return HttpResponseRedirect("/codejudge_django")
+			return HttpResponseRedirect("/judgev2")
 	except KeyError:
 		context = RequestContext(request)
 		error = False

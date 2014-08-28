@@ -1,0 +1,82 @@
+<title>Admin Panel</title>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+<style>
+</style>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/judgev2/admin_site/">Home</a>
+      </div>
+      <ul class="nav navbar-nav navbar-center">
+        <li><a href="/judgev2/admin_site/logout/">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <br><br><br><br>
+        {% if error == 1 %}
+        <span class="badge" style="background-color:#a00;">A problem with that name already exists.</span>
+        {% elif error == 2 %}
+        <span class="badge" style="background-color:#0a0;">Problem added Successfully.</span>
+        {% elif error == 3 %}
+        <span class="badge" style="background-color:#a00;">Something went wrong.</span>
+        {% endif %}
+        <br><br>
+        <form role="form" method="POST" action="/judgev2/admin_site/submit/" >
+          {% csrf_token %}
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="probname">Problem Name</label>
+              <input required type="text" class="form-control" id="probname" placeholder="Name" name="probname">
+            </div>
+            <div class="form-group">
+              <label for="probstat">Problem Statement</label>
+              <textarea required class="form-control" style="height:300px;" id="probstat" name="probstat"></textarea>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="testin">Test Input</label>
+              <textarea required class="form-control" style="height:130px;" id="testin" name="testin"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="testout">Test Output</label>
+              <textarea required class="form-control" style="height:130px;" id="testout" name="testout"></textarea>
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <div class="form-group">
+              <label for="points">Points</label>
+              <input required type="text" class="form-control" id="points" placeholder="Integer" name="points">
+            </div>
+          </div>
+          <div class="col-xs-2">
+            <div class="form-group">
+              <label for="timelimit">Time Limit (ms)</label>
+              <input required type="text" class="form-control" id="timelimit" placeholder="Milliseconds" name="timelimit">
+            </div>
+          </div>
+          <div class="col-xs-8">
+          </div>
+          <div class="col-xs-12">
+            <input type="submit" class="btn btn-primary" value="Create">
+          </div>
+        </form>
+        <hr>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>

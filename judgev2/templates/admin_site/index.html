@@ -11,24 +11,26 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/codejudge_django/admin_site/">Home</a>
+        <a class="navbar-brand" href="/judgev2/admin_site/">Home</a>
       </div>
+      <ul class="nav navbar-nav navbar-center">
+        <li><a href="/judgev2/admin_site/logout/">Logout</a></li>
+      </ul>
     </div>
   </nav>
   <br><br><br><br>
   <div class="container-fluid">
     <div class="row-fluid">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <center><h4>LOGIN</h4></center>
-        <center>AHOY CAPTAINS !</center>
+      <div class="col-xs-4"></div>
+      <div class="col-xs-4">
+        <center><h4><u>LOGIN</u></h4></center>
+        <center><h4>Hello Captains !</h4></center>
         <hr>
-        {% if error %}
-        <center>
-        <span class="badge" style="background-color:#a00;">Not a captain! This demeanor will be reported.</span><br><br>
-        </center>
+        {% if error == 1 %}
+        <span class="badge" style="background-color:#a00;">You are not a captain! This demeanor will be reported.</span>
         {% endif %}
-        <form role="form" method="POST" action="/codejudge_django/admin_site/" >
+        <br><br>
+        <form role="form" method="POST" action="/judgev2/admin_site/" >
           {% csrf_token %}
           <div class="form-group">
             <label for="exampleInputUsername">Username</label>
@@ -45,5 +47,5 @@
     </div>
   </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>

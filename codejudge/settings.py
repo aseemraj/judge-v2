@@ -26,7 +26,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-LOGIN_URL = "/codejudge_django/login/"
+LOGIN_URL = "/judgev2/login/"
 
 # Application definition
 

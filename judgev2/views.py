@@ -1,15 +1,14 @@
 from django.shortcuts import render, get_object_or_404, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 from judgev2.models import Users, Problems, Solve
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
-
+import json
 
 # Create your views here.
-
 def index(request):
 	try:
 		if request.session['username']:
@@ -30,55 +29,106 @@ def users_index(request):
 
 def admin_index(request):
 	try:
-		if request.session['username'] and request.session['username']=='admin':
-			return HttpResponseRedirect("admin_site/newprob/")
+		if request.session['username']:
+			if request.session['username']=='admin':
+				return HttpResponseRedirect("newprob/")
+			else:
+				del request.session['username']
+				del request.session['password']
+				logout(request)
+				return render(request, 'admin_site/index.html', {'error': 2})
 		else:
-			return render(request, 'admin_site/index.html')
+			return render(request, 'admin_site/index.html', {'error': 2})
 	except KeyError:
 		context = RequestContext(request)
-		error = False
+		error = 1
 		if request.method == 'POST':
 			username = request.POST['username']
 			password = request.POST['password']
-			if username=='admin':
-				user = authenticate(username=username, password=password)
-				if user != None:
-					if user.is_authenticated():
-						login(request, user)
-						request.session['username']  = username
-						request.session['password']  = password
-						return HttpResponseRedirect("/judgev2/admin_site/newprob/")
-					else:
-						error = True
-				else:
-					error = True
+			if username=='admin' and password=='pclub2014dhpc':
+				request.session['username']  = username
+				request.session['password']  = password
+				return HttpResponseRedirect("/judgev2/admin_site/newprob/")
 			else:
-				error = True
+				error = 1
+		else:
+			error = 2
 		return render(request, 'admin_site/index.html', {'error': error})
+
+def newprob(request):
+	try:
+		if request.session['username']:
+			if request.session['username']=='admin':
+				return render(request, 'admin_site/newprob.html')
+			else:
+				return HttpResponseRedirect("/judgev2/admin_site/")
+		else:
+			return HttpResponseRedirect("/judgev2/admin_site/")
+	except KeyError:
+		return HttpResponseRedirect("/judgev2/admin_site/")
+
+def adminlogout(request):
+	try:
+		if request.session['username']:
+			del request.session['username']
+		return HttpResponseRedirect("/judgev2/admin_site/")
+	except KeyError:
+		return HttpResponseRedirect("/judgev2/admin_site/")
+
+def adminsubmit(request):
+	try:
+		if request.session['username']:
+			if request.session['username']=='admin':
+				context = RequestContext(request)
+				if request.method == 'POST':
+					probname = request.POST['probname']
+					probstat = request.POST['probstat']
+					testin = request.POST['testin']
+					testout = request.POST['testout']
+					points = request.POST['points']
+					timelimit = request.POST['timelimit']
+					query = Problems.objects.filter(problem_name=probname)
+					if query:
+						return render(request, 'admin_site/newprob.html', {'error': 1})
+					else:
+						problem = Problems.objects.create(problem_name=probname, problem_statement=probstat, input=testin, solvedby=0, output=testout, points=points, time=timelimit)
+						problem.save()
+					return render(request, 'admin_site/newprob.html', {'error': 2})
+				else:
+					return render(request, 'admin_site/newprob.html', {'error': 3})
+			else:
+				return HttpResponseRedirect("/judgev2/admin_site/logout/")
+		else:
+			return HttpResponseRedirect("/judgev2/admin_site/")
+	except KeyError:
+		return HttpResponseRedirect("/judgev2/admin_site/")
+			
 
 def register(request):
 	context = RequestContext(request)
-	registered = False
-
-	if request.method == 'POST':
+	errors = False
+	if request.method == 'POST' and request.is_ajax():
 		username = request.POST['user_name']
 		password = request.POST['pass_word']
 		email = request.POST['email']
-
-		user = User.objects.create_user(username, email, password)
-		user.save()
-
-		query = Users.objects.create(username = username)
-		query.save()
-		registered = True
-		user = authenticate(username=username, password=password)
-		login(request, user)
-		request.session['username']  = username
-		request.session['password']  = password
-		return HttpResponseRedirect("/judgev2")
-
+		query = User.objects.filter(username=username)
+		if query:
+			errors = True
+		else:
+			user = User.objects.create_user(username, email, password)
+			user.save()
+			query = Users.objects.create(username = username)
+			query.save()
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			request.session['username']  = username
+			request.session['password']  = password
+			print request.session['username']
+			
+		return HttpResponse(json.dumps({'errors': errors}),content_type='application/json')
 	else:
-		return HttpResponse("Unsuccesful registration")
+		raise Http404
+
 
 def user_login(request):
 	try:
@@ -87,7 +137,7 @@ def user_login(request):
 	except KeyError:
 		context = RequestContext(request)
 		error = False
-		if request.method == 'POST':
+		if request.method == 'POST' and request.is_ajax():
 			username = request.POST['username']
 			password = request.POST['password']
 			user = authenticate(username=username, password=password)
@@ -96,13 +146,15 @@ def user_login(request):
 					login(request, user)
 					request.session['username']  = username
 					request.session['password']  = password
-					return HttpResponseRedirect("/judgev2")
+					return HttpResponse(json.dumps({'errors': error}),content_type='application/json')
 				else:
 					error = True
+					return HttpResponse(json.dumps({'errors': error}),content_type='application/json')
 			else:
 				error = True
+				return HttpResponse(json.dumps({'errors': error}),content_type='application/json')
 
-		return render(request, 'users/login.html', {'error': error})
+		return render(request, 'users/login.html')
 
 @login_required
 def change_password(request):
@@ -128,13 +180,13 @@ def change_password(request):
 
 @login_required
 def change_email(request):
-	error = True
+	error = 3
 	if request.method == "POST":
 		email = request.POST['email']
 		query = User.objects.get(username=request.session['username'])
 		query.email = email
 		query.save()
-		error = False
+		error = 4
 	t = loader.get_template('users/account.html')
 	c = RequestContext(request, {'error': error})
 	return HttpResponse(t.render(c))

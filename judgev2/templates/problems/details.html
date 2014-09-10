@@ -2,10 +2,10 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="col-md-6">
-            <form role="form" method="POST" action="/codejudge_django/problems/{{ prob.id }}/" >
+            <form role="form" method="POST" action="submit/" >
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="lang">Language</label>
+                    <label for="lang">Choose Language</label>
                     <select required class="form-control" id="lang" name="language">
                         <option value="2">C++</option>
                         <option value="1">C</option>
@@ -14,12 +14,19 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="codesubmit">Code</label>
+                    <label for="codesubmit">Put your Code here:</label>
                     <textarea rows="16" required type="text" class="form-control" id="codesubmit" name="code"></textarea>
                 </div>
-                <input type="submit" class="btn btn-primary" value="Submit">
+                <input type="submit" class="btn btn-primary" value="Submit">&nbsp;&nbsp;&nbsp;
+                {% if status %}
+                    <span class="badge" style="background-color:#0a0;">You have successfully solved this problem</span>
+                {% else %}
+                    <span class="badge" style="background-color:#b55;">You have not solved this problem yet</span>
+                {% endif %}
             </form>
         </div>
-        <div class="col-md-6"><h4><u>{{ prob.problem_name }}</u></h4>{{ prob.problem_statement }}</div>
+        <div class="col-md-6"><h4><u>{{ prob.problem_name }}</u></h4>
+        {{ prob.problem_statement }}
+        </div>
     </div>
 </div>

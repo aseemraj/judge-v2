@@ -1,0 +1,33 @@
+{% include "users/base.html" %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table">
+            <tr class="info">
+                <td><b></b></td>
+                <td><b>Problem ID</b></td>
+                <td><b>Username</b></td>
+                <td><b>Status</b></td>
+                <td><b>Language</b></td>
+            </tr>
+            {% for sol in solutions %}
+                {% if forloop.counter|divisibleby:2 %}
+                    <tr class="success">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sol.problem_id }}</td>
+                        <td>{{ sol.username }}</td>
+                        <td>{{ sol.status }}</td>
+                        <td>{{ sol.language }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sol.problem_id }}</td>
+                        <td>{{ sol.username }}</td>
+                        <td>{{ sol.status }}</td>
+                        <td>{{ sol.language }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>

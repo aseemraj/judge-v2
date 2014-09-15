@@ -169,7 +169,7 @@ def usersubmit(request, problem_id):
         # send for judging and retrieve results
         # If AC, increment user's solved, score and problem's solvedby
 
-        # query = User.objects.get(username=username, problem_id=prob.id)
+        # query = Solve.objects.get(username=username, problem_id=prob.id)
         # if(query):
             # increment attempts and change status accordingly
         # else:

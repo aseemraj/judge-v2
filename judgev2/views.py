@@ -264,8 +264,10 @@ def problems(request):
 @login_required
 def details(request, problem_id):
     prob = get_object_or_404(Problems, id=problem_id)
-    solution = Solve.objects.get(username=request.session['username'], problem_id=prob.id)
-    print solution
+    try:
+        solution = Solve.objects.get(username=request.session['username'], problem_id=prob.id)
+    except Solve.DoesNotExist:
+        solution = None
     status = False
     if solution:
         if solution.status==1:

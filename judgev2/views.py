@@ -165,22 +165,40 @@ def usersubmit(request, problem_id):
         username = request.session['username']
         language = request.POST['language']
         code = request.POST['code']
-
+        status = False
         # send for judging and retrieve results
+        # status = True (For correct solution)
         # If AC, increment user's solved, score and problem's solvedby
-
-        # query = Solve.objects.get(username=username, problem_id=prob.id)
-        # if(query):
+        query_for_getting_user = Users.objects.get(username=username) 
+        try:
+            query = Solve.objects.get(username=username, problem_id=prob.id)
+        except Solve.DoesNotExist:
+            query = None
+        
+        if(query and not query.status):
+            prob.solvedby = prob.solvedby+1
+            query_for_getting_user.solved = query_for_getting_user.solved+1
+            query_for_getting_user.score = query_for_getting_user.score + prob.points
+            query_for_getting_user.save()
+            prob.save() 
+        if(query):
             # increment attempts and change status accordingly
-        # else:
-            # new entry!
-            # query = Solve.objects.create(problem_id = prob.id, username = username, status = 1, solution = code, language = language)
-            # query.save()
-    # If AC
-    # return render(request, 'problems/details.html', {'prob': prob, 'status': True})
-    
-    # else
-    return render(request, 'problems/details.html', {'prob': prob, 'status': False})
+            query.attempts = query.attempts+1
+            query.status = status
+            if status:
+                query.score = prob.points
+            query.save()
+        else:
+            # New entry
+            if status:
+                query_for_creating_newEntry = Solve.objects.create(problem_id = prob.id, score=prob.points, username = username, status = status, solution = code, language = language, attempts=1)
+            else:
+                query_for_creating_newEntry = Solve.objects.create(problem_id = prob.id, score=0, username = username, status = status, solution = code, language = language, attempts=1)
+            query_for_creating_newEntry.save()
+    if status:
+        return render(request, 'problems/details.html', {'prob': prob, 'status': True})
+    else:
+        return render(request, 'problems/details.html', {'prob': prob, 'status': False})
 
 @login_required
 def change_password(request):
@@ -246,7 +264,8 @@ def problems(request):
 @login_required
 def details(request, problem_id):
     prob = get_object_or_404(Problems, id=problem_id)
-    solution = Solve.objects.filter(username=request.session['username'], problem_id=prob.id)
+    solution = Solve.objects.get(username=request.session['username'], problem_id=prob.id)
+    print solution
     status = False
     if solution:
         if solution.status==1:

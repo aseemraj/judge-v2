@@ -185,6 +185,7 @@ def usersubmit(request, problem_id):
             # increment attempts and change status accordingly
             query.attempts = query.attempts+1
             query.status = status
+            query.solution = code
             if status:
                 query.score = prob.points
             query.save()

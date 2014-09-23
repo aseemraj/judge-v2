@@ -9,6 +9,8 @@ class Problems(models.Model):
 	output = models.TextField()
 	points = models.IntegerField()
 	time = models.IntegerField()
+	linestomatch = models.IntegerField(default=1)
+	partial = models.IntegerField(default=0)
 
 class Users(models.Model):
 	username = models.CharField(max_length=50)
@@ -20,12 +22,21 @@ class Users(models.Model):
 class Solve(models.Model):
 	problem_id = models.IntegerField()
 	username = models.CharField(max_length=50)
-	status = models.IntegerField(default=1)
+
+	# 0: Compile Error
+	# 1: Runtime Error
+	# 2: TLE
+	# 3: AC
+	# 4: WA
+
+	status = models.IntegerField()
+	message = models.TextField()
 	attempts = models.IntegerField(default=1)
 	score = models.FloatField()
 	solution = models.TextField()
 	time = models.IntegerField()
-	language = models.IntegerField()
+	language = models.TextField()
+	filename = models.TextField()
 
 class LanguagePreference(models.Model):
 	name_of_event = models.CharField(max_length=50)
